@@ -79,6 +79,24 @@ ssize_t read(ssize_t fd, char* buf, size_t count) {
 		);
 }
 
+ssize_t pread(ssize_t fd, char* buf, size_t count, size_t pos) {
+	return (ssize_t) syscall4(
+			17,
+			(void*) fd,
+			(void*) buf,
+			(void*) count,
+			(void*) pos
+		);
+}
+
+char fgetc(ssize_t fd) {
+	char c;
+	if( read(fd, &c, 1) == 0) {
+		return 0;
+	}
+	return c;
+}
+
 ssize_t close(ssize_t fd) {
 	return (ssize_t) syscall1(3, (void*) fd);
 }
@@ -91,5 +109,9 @@ size_t strlen(char* str) {
 
 size_t puts(char* str) {
 	return write(1, str, strlen(str));
+}
+
+size_t putc(char c) {
+	return write(1, &c, 1);
 }
 
